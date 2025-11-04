@@ -38,11 +38,11 @@ const Navigation = () => {
 
   // Get the appropriate dashboard route based on user role
   const getDashboardRoute = () => {
+    // Check if user is admin or superadmin
     if (userRole === 'admin' || userRole === 'superadmin') {
       return '/admin';
-    } else if (userRole === 'judge') {
-      return '/dashboard/judge';
     }
+    // All other users go to student dashboard
     return '/dashboard/student';
   };
 
