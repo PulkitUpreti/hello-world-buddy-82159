@@ -17,6 +17,7 @@ const Navigation = () => {
   const location = useLocation();
   const {
     user,
+    userRole,
     signOut
   } = useAuth();
   useEffect(() => {
@@ -34,6 +35,17 @@ const Navigation = () => {
     };
     fetchUserProfile();
   }, [user]);
+
+  // Get the appropriate dashboard route based on user role
+  const getDashboardRoute = () => {
+    if (userRole === 'admin' || userRole === 'superadmin') {
+      return '/admin';
+    } else if (userRole === 'judge') {
+      return '/dashboard/judge';
+    }
+    return '/dashboard/student';
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       const sections = ["home", "explore", "features", "events", "courses"];
@@ -160,7 +172,7 @@ const Navigation = () => {
 
           <div className="hidden md:flex items-center space-x-4">
             {user ? <Button size="sm" variant="outline" asChild>
-                <Link to="/dashboard/student">
+                <Link to={getDashboardRoute()}>
                   Dashboard
                 </Link>
               </Button> : <Button size="sm" className="bg-gradient-primary hover:shadow-primary" onClick={() => setIsAuthModalOpen(true)}>
@@ -203,7 +215,7 @@ const Navigation = () => {
             </Link>
             <div className="flex flex-col space-y-2 pt-4">
               {user ? <Button size="sm" variant="outline" asChild onClick={() => setIsMenuOpen(false)}>
-                  <Link to="/dashboard/student">
+                  <Link to={getDashboardRoute()}>
                     Dashboard
                   </Link>
                 </Button> : <Button size="sm" className="bg-gradient-primary hover:shadow-primary" onClick={() => {
